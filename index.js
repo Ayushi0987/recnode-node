@@ -1,28 +1,42 @@
 const express = require('express');
 require('dotenv').config()
 const app = express();
-console.log(process.env.PORT)
 const PORT = process.env.PORT || 3000;
-const path = require('path')
 
-app.get('/', (req,res)=>{
-    res.send('You are cool, and you hit the root path')
+app.get('/people/:id/:storeId', (req, res) => {
+    const params = req.params;
+    console.log(params);
+    res.send('evaluating')    
 })
 
-app.post('/', (req,res)=>{
-    res.send('ohhh you wanna hit the server ?')
+app.get('/users', (req, res) => {
+    // fetch users from db
+    const tempDbReturnedUser = {
+        name: 'Ayushi',
+        age: 22,
+        hobbies: 'Coding'
+    }
+    res.json(tempDbReturnedUser)
 })
 
-app.get('/page/about', (req, res) => {
-    console.log(path.join(__dirname, 'view', 'about.html'));
-    res.sendFile(path.join(__dirname, 'view', 'about.html'))
-    
-})
+app.get('/middleware-usage', 
+    (req, res, next) => {
+        //middleware -> manipulate the req
+        console.log('I am currently in the middleware');
+        req.manipulated = true;
+        next();
+    },
+    (req, res) => {
+        const didMiddlewareActuallyWork = req.manipulated;
+        console.log(didMiddlewareActuallyWork);
+        
+        //Actual logic 
+        console.log('I am the actual logic');
+        res.send('Actual logic returned.')
+    }
+)
 
-app.patch('/', (req, res)=> {
-    console.log('patch it is')
-})
-
-app.listen(PORT, ()=>{
-    console.log(`server is up and running at port ${PORT}`)
+app.listen(PORT, () => {
+    // console.log(process)
+    console.log(`server is up and running at port ${PORT}`);
 })

@@ -11,6 +11,34 @@ app.get('/', (req,res)=>{
     res.send('You are cool, and you hit the root path')
 })
 
+app.get('/people/:id/:storeId', (req, res) => {
+    const paramss = req.params;
+    console.log(paramss);
+    res.send('evaluating')
+})
+
+app.get('/user', () => {
+    const queryParams = req.query;
+    console.log(queryParams);
+    const resultBody = {};
+    const ageDistribution = {
+        1: '0-18',
+        2: '18-40',
+        3: '40-60',
+        4: '60 abouve'
+    }
+    const {gender, ageCriteria} = req.query;
+    //gender -> MAle, Famale
+    if(gender == 'male' || gender == 'female'){
+        //apply filter of male during database query
+        resultBody.genderSegregation = gender;
+    }
+    if(ageDistribution[ageCriteria]){
+        resultBody.ageDistribution = ageDistribution[ageCriteria]
+    }
+    res.send(resultBody)
+})
+
 app.post('/', (req,res)=>{
     res.send('ohhh you wanna hit the server ?')
 })

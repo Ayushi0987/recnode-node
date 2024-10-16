@@ -4,12 +4,12 @@ const app = express();
 
 require('./db')
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-app.use('/', require('./routes'))
+app.use('/', require('./routes/index'))
 
 
 app.listen(PORT, () => {
